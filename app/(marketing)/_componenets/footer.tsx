@@ -3,7 +3,7 @@ import { Logo } from "./logo";
 
 export const Footer = () => {
   return (
-    <div className="flex z-50 items-center p-6 w-full bg-background">
+    <div className="flex z-50 items-center p-6 w-full bg-background dark:bg-[#1F1F1F] m-0">
       <Logo />
       <div className="md:ml-auto w-full justify-between md:justify-end flex items-center gap-x-2 text-muted-foreground">
         <Button variant="ghost" size="sm">
