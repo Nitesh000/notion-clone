@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import { ChevronsLeft, MenuIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { ElementRef, useRef, useState } from "react";
+import { ElementRef, useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
 export const Navigation = () => {
@@ -15,6 +15,20 @@ export const Navigation = () => {
   const navbarRef = useRef<ElementRef<"div">>(null);
   const [isResetting, setIsResetting] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(isMobile);
+
+  useEffect(() => {
+    if (isMobile) {
+      collapseFunction();
+    } else {
+      resetWidth();
+    }
+  }, [isMobile]);
+
+  useEffect(() => {
+    if (isMobile) {
+      collapseFunction();
+    }
+  }, [pathname, isMobile]);
 
   const handleMouseDown = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -50,6 +64,34 @@ export const Navigation = () => {
     document.removeEventListener("mouseup", handleMouseUp);
   };
 
+  const resetWidth = () => {
+    if (sidebarRef.current && navbarRef.current) {
+      setIsCollapsed(false);
+      setIsResetting(true);
+
+      sidebarRef.current.style.width = isMobile ? "100%" : "240px";
+      navbarRef.current.style.setProperty(
+        "width",
+        isMobile ? "0" : "calc(100% - 240px)",
+      );
+      navbarRef.current.style.setProperty("left", isMobile ? "100%" : "240px");
+    }
+    setTimeout(() => setIsResetting(false), 300); // This should match the transition duration
+  };
+
+  // NOTE: collapse funcitn
+  const collapseFunction = () => {
+    if (sidebarRef.current && navbarRef.current) {
+      setIsCollapsed(true);
+      setIsResetting(true);
+
+      sidebarRef.current.style.width = "0";
+      navbarRef.current.style.setProperty("width", "100%");
+      navbarRef.current.style.setProperty("left", "0");
+      setTimeout(() => setIsResetting(false), 300);
+    }
+  };
+
   return (
     <>
       <aside
@@ -61,6 +103,7 @@ export const Navigation = () => {
         )}
       >
         <div
+          onClick={collapseFunction}
           role="button"
           className={cn(
             "absolute right-2 top-3 w-6 h-6 rounded-sm opacity-0 transition text-muted-foreground dark:hover:bg-neutral-600 group-hover/sidebar:opacity-100 hover:bg-neutral-300",
@@ -77,7 +120,7 @@ export const Navigation = () => {
         </div>
         <div
           onMouseDown={handleMouseDown}
-          onClick={() => {}}
+          onClick={resetWidth}
           className="absolute top-0 right-0 w-1 h-full opacity-0 transition cursor-ew-resize bg-primary/10 group-hover/sidebar:opacity-100"
         />
       </aside>
@@ -91,7 +134,11 @@ export const Navigation = () => {
       >
         <nav className="py-2 px-3 w-full bg-transparent">
           {isCollapsed && (
-            <MenuIcon role="button" className="w-6 h-6 text-muted-foreground" />
+            <MenuIcon
+              onClick={resetWidth}
+              role="button"
+              className="w-6 h-6 text-muted-foreground"
+            />
           )}
         </nav>
       </div>
