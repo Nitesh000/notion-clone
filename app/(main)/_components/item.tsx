@@ -40,10 +40,29 @@ export const Item = ({
       }}
       className={cn(
         "flex items-center py-1 pr-3 w-full text-sm font-medium grpup min-h-[27px] text-muted-foreground hover:bg-primary/5",
+        active && "bg-primary/5 text-primary",
       )}
     >
-      <Icon className="mr-2 shrink-0 h-[18px] text-muted-foreground" />
+      {!!id && (
+        <div
+          role="button"
+          className="mr-1 h-full rounded-sm dark:bg-neutral-600 hover:bg-neutral-300"
+          onClick={() => {}}
+        >
+          <ChevronIcon className="w-4 h-4 shrink-0 text-muted-foreground/50" />
+        </div>
+      )}
+      {documentIcon ? (
+        <div className="mr-2 shrink-0 text-[18px]">{documentIcon}</div>
+      ) : (
+        <Icon className="mr-2 shrink-0 h-[18px] text-muted-foreground" />
+      )}
       <span className="truncate">{label}</span>
+      {isSearch && (
+        <kbd className="inline-flex gap-1 items-center px-1.5 ml-auto h-5 font-mono font-medium rounded border opacity-100 pointer-events-none select-none bg-muted text-[10px] text-muted-foreground">
+          <span className="text-xs">Ctrl + K</span>
+        </kbd>
+      )}
     </div>
   );
 };
