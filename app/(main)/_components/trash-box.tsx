@@ -1,6 +1,6 @@
 "use client";
 
-import { ConfirmModal } from "@/components/mondals/confirm-modal";
+import { ConfirmModal } from "@/components/modals/confirm-modal";
 import { Spinner } from "@/components/spinner";
 import { Input } from "@/components/ui/input";
 import { api } from "@/convex/_generated/api";
@@ -92,7 +92,7 @@ export const TrashBox = () => {
               <div
                 onClick={(e) => onRestore(e, document._id)}
                 role="button"
-                className="p-2 rounded-sm hover:bg-neutral-200"
+                className="p-2 rounded-sm dark:hover:bg-neutral-600 hover:bg-neutral-200"
               >
                 <Undo className="w-4 h-4" />
               </div>
@@ -102,7 +102,7 @@ export const TrashBox = () => {
                 }}
               >
                 <div
-                  className="p-2 rounded-sm hover:bg-neutral-200"
+                  className="p-2 rounded-sm dark:hover:bg-neutral-600 hover:bg-neutral-200"
                   role="button"
                 >
                   <Trash className="w-4 h-4 text-muted-foreground" />

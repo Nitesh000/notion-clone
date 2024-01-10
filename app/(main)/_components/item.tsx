@@ -54,6 +54,8 @@ export const Item = ({
   const create = useMutation(api.documents.create);
   const archive = useMutation(api.documents.archive);
 
+  const isMac = window.navigator.userAgent.toLowerCase().includes("mac");
+
   const onArchive = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     event.stopPropagation();
     if (!id) return;
@@ -108,7 +110,7 @@ export const Item = ({
       {!!id && (
         <div
           role="button"
-          className="mr-1 h-full rounded-sm dark:bg-neutral-600 hover:bg-neutral-300"
+          className="mr-1 h-full rounded-sm dark:hover:bg-neutral-600 hover:bg-neutral-300"
           onClick={handleExpand}
         >
           <ChevronIcon className="w-4 h-4 shrink-0 text-muted-foreground/50" />
@@ -122,7 +124,7 @@ export const Item = ({
       <span className="truncate">{label}</span>
       {isSearch && (
         <kbd className="inline-flex gap-1 items-center px-1.5 ml-auto h-5 font-mono font-medium rounded border opacity-100 pointer-events-none select-none bg-muted text-[10px] text-muted-foreground">
-          <span className="text-xs">Ctrl + K</span>
+          <span className="text-xs">{isMac ? "⌘" : "Ctrl"} + K</span>
         </kbd>
       )}
       {!!id && (
