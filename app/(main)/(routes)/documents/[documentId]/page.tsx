@@ -3,6 +3,9 @@
 import { Cover } from "@/components/cover";
 import { Toolbar } from "@/components/toolbar";
 import { Skeleton } from "@/components/ui/skeleton";
+import dynamic from "next/dynamic";
+import { useMemo } from "react";
+
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { useQuery } from "convex/react";
@@ -13,6 +16,10 @@ interface DocumentIdPageProps {
   };
 }
 const DocumentIdPage = ({ params }: DocumentIdPageProps) => {
+  const Editor = useMemo(
+    () => dynamic(() => import("@/components/editor"), { ssr: false }),
+    [],
+  );
   const document = useQuery(api.documents.getById, {
     documentId: params.documentId,
   });
@@ -42,6 +49,7 @@ const DocumentIdPage = ({ params }: DocumentIdPageProps) => {
       <Cover url={document.coverImage} />
       <div className="mx-auto md:max-w-3xl lg:max-w-4xl">
         <Toolbar initialData={document} />
+        <Editor onChange={() => {}} initialContent={document.content} />
       </div>
     </div>
   );

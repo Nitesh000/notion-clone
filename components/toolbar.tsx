@@ -32,7 +32,7 @@ export const Toolbar = ({ initialData, preview }: ToolbarProps) => {
     setTimeout(() => {
       setValue(initialData.title);
       inputRef.current?.focus();
-      inputRef.current?.select();
+      // inputRef.current?.select();
     }, 0);
   };
 
