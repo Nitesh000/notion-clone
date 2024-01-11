@@ -8,7 +8,7 @@ import { useMemo } from "react";
 
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-import { useMutation, useQuery } from "convex/react";
+import { useQuery } from "convex/react";
 
 interface DocumentIdPageProps {
   params: {
@@ -20,17 +20,9 @@ const DocumentIdPage = ({ params }: DocumentIdPageProps) => {
     () => dynamic(() => import("@/components/editor"), { ssr: false }),
     [],
   );
-  const update = useMutation(api.documents.update);
   const document = useQuery(api.documents.getById, {
     documentId: params.documentId,
   });
-
-  const onUpdate = (content: string) => {
-    update({
-      id: params.documentId,
-      content: content,
-    });
-  };
 
   if (document === undefined) {
     return (
@@ -54,10 +46,14 @@ const DocumentIdPage = ({ params }: DocumentIdPageProps) => {
 
   return (
     <div className="pb-40">
-      <Cover url={document.coverImage} />
+      <Cover url={document.coverImage} preview />
       <div className="mx-auto md:max-w-3xl lg:max-w-4xl">
-        <Toolbar initialData={document} />
-        <Editor onChange={onUpdate} initialContent={document.content} />
+        <Toolbar initialData={document} preview />
+        <Editor
+          editable={false}
+          onChange={() => {}}
+          initialContent={document.content}
+        />
       </div>
     </div>
   );
