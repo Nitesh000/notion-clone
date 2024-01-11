@@ -268,7 +268,7 @@ export const update = mutation({
     contnet: v.optional(v.string()),
     coverImage: v.optional(v.string()),
     icon: v.optional(v.string()),
-    isPublished: v.optional(v.boolean())
+    isPublished: v.optional(v.boolean()),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -279,7 +279,7 @@ export const update = mutation({
 
     const userId = identity.subject;
 
-    const { id, ...rest} = args;
+    const { id, ...rest } = args;
 
     const existingDocument = await ctx.db.get(args.id);
 
@@ -289,10 +289,10 @@ export const update = mutation({
 
     if (existingDocument.userId !== userId) {
       throw new Error("Unauthorized");
-    } 
+    }
 
-    const document = await ctx.db.patch(args.id, {...rest});
+    const document = await ctx.db.patch(args.id, { ...rest });
 
     return document;
-  }
-})
+  },
+});
